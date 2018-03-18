@@ -1,0 +1,4 @@
+django<=1.11.5
+paho-mqtt==1.1
+six<=1.11.0
+django_extensions
