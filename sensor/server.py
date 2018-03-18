@@ -7,12 +7,12 @@ import logging
 
 logger = logging.getLogger('sensor')
 
-class MqttServer:
+class MQTTServer:
     client = mqtt.Client()
 
     def __init__(self, host, port, debug=False):
         self._host = host
-        self._port = port
+        self._port = int(port)
 
         if debug:
             try:
@@ -22,7 +22,7 @@ class MqttServer:
                 logging.basicConfig(level = logging.DEBUG, format = '%(asctime)s %(name)s %(levelname)s %(message)s')
 
         self.client.reinitialise(client_id='master', clean_session=True, userdata=None)
-        self.client.tls_set(ca_certs='.ca')
+        self.client.tls_set(ca_certs='./.certs')
         self.client.on_connect = self._on_connect  # 设置连接上服务器回调函数
         self.client.on_message = self._on_message  # 设置接收到服务器消息回调函数
 
@@ -32,7 +32,7 @@ class MqttServer:
 
     def publish(self, topic, data):
         self.client.publish(topic, data)
-        logger.debug('publish: ', topic, data)
+        logger.debug('publish: ' + topic + data)
 
     def loop(self, timeout=None):
         thread = threading.Thread(target=self._loop, args=(timeout,))
@@ -55,6 +55,11 @@ class MqttServer:
         logger.debug(userdata)
      
 if __name__ == '__main__':
-    client = MqttServer('127.0.0.1', 1883)
+    client = MQTTServer('127.0.0.1', 1883)
     client.connect()
     client.loop()
+
+    while True:
+        update = json.dumps({'downurl':'http://www.baidu.com'})
+        client.publish('update', update)
+        time.sleep(2)       
