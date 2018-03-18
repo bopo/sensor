@@ -59,7 +59,7 @@ ROOT_URLCONF = 'config.urls'
 
 # MQTT config
 
-MQTT_CERTS_ROOT = os.path.join(BASE_DIR, 'private')
+MQTT_CERTS_ROOT = os.path.join(BASE_DIR, 'config', 'private')
 MQTT_ACL_ALLOW = False
 MQTT_ACL_ALLOW_ANONIMOUS = MQTT_ACL_ALLOW
 MQTT_ALLOW_EMPTY_CLIENT_ID = False
@@ -67,26 +67,26 @@ MQTT_SESSION_TIMEOUT = 5
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/1.9/ref/settings/#databases
-if not os.environ.get('RUN_DB_SERVER', False):
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        }
-    }
-else:  # pragma: no cover
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'sensor',
-            'USER': 'sensor',
-            'PASSWORD': 'password',
-            'HOST': '127.0.0.1',
-            'PORT': 5432,
-        }
-    }
+# # Database
+# # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
+# if not os.environ.get('RUN_DB_SERVER', False):
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.sqlite3',
+#             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#         }
+#     }
+# else:  # pragma: no cover
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#             'NAME': 'sensor',
+#             'USER': 'sensor',
+#             'PASSWORD': 'password',
+#             'HOST': '127.0.0.1',
+#             'PORT': 5432,
+#         }
+#     }
 
 
 # Password validation
