@@ -1,21 +1,19 @@
 [[source]]
-
-url = "https://pypi.python.org/simple"
-verify_ssl = true
+url = "http://mirrors.aliyun.com/pypi/simple/" 
+verify_ssl = false
 name = "pypi"
 
-
 [packages]
-
-Django = "<=1.11.5"
-paho-mqtt = "==1.1"
-six = "<=1.11.0"
-
+django = "<3"
+paho-mqtt = "*"
+django-extensions = "*"
+gunicorn = "*"
+"psycopg2" = "*"
+djangorestframework = "*"
+django-mptt = "*"
+django-suit = "*"
 
 [dev-packages]
 
-
-
 [requires]
-
 python_version = "3.6"

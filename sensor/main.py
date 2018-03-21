@@ -31,7 +31,8 @@ def cli(ctx, verbose):
 
 @cli.command(help='运行客户端')
 @click.option('-d', '--debug', is_flag=True, help='调试模式.')
-def client(debug=False):    
+@click.option('--tls', is_flag=True, help='tls模式.')
+def client(debug=False, tls=False):    
     print('APPKEY: ', APPKEY)
     print('SECRET: ', SECRET)
     print('')
@@ -40,27 +41,23 @@ def client(debug=False):
     print('SERVER_PORT: ', SERVER_PORT)
     print('')
 
-    client = MQTTClient(host=SERVER_HOST, port=SERVER_PORT, name=APPKEY, debug=debug)
+    client = MQTTClient(host=SERVER_HOST, port=SERVER_PORT, name=APPKEY, debug=debug, tls=tls)
     client.connect(APPKEY, SECRET)
     client.publish('master', '0000')
     client.loop()
 
     while True:
         client.publish('master', json.dumps([1,2,3]))
-        time.sleep(1)   
+        time.sleep(.1)   
 
 @cli.command(help='运行服务端')
 @click.option('-d', '--debug', is_flag=True, help='调试模式.')
-def server(debug=False):
-    print('>> server runing...')
-    client = MQTTServer(host=SERVER_HOST, port=SERVER_PORT, debug=debug)
+@click.option('--tls', is_flag=True, help='tls模式.')
+def server(debug=False, tls=False):
+    print('>> Server runing...')
+    client = MQTTServer(host=SERVER_HOST, port=SERVER_PORT, debug=debug, tls=tls)
     client.connect(APPKEY, SECRET)
     client.loop()
-
-    while True:
-        update = json.dumps({'downurl':'http://www.baidu.com'})
-        client.publish('update', str(update))
-        time.sleep(2)  
 
 @cli.command(help='检查系统状态')
 @click.option('-d', '--debug', is_flag=True, help='调试模式.')

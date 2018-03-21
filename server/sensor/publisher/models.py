@@ -148,7 +148,7 @@ class Server(models.Model):
     """
     host = models.CharField(max_length=1024)
     port = models.IntegerField(default=1883)
-    secure = models.ForeignKey(SecureConf, null=True, blank=True)
+    secure = models.ForeignKey(SecureConf, on_delete=models.CASCADE, null=True, blank=True)
     protocol = models.IntegerField(choices=PROTO_MQTT_VERSION, default=mqtt.MQTTv311)
     status = models.IntegerField(choices=PROTO_MQTT_CONN_STATUS, default=PROTO_MQTT_CONN_ERROR_UNKNOWN)
 
@@ -158,7 +158,7 @@ class Server(models.Model):
     def __str__(self):
         return "mqtt://%s:%s" % (self.host, self.port)
 
-    def __unicode__(self):
+    def __str__(self):
         return "mqtt://%s:%s" % (self.host, self.port)
 
 
@@ -174,7 +174,7 @@ class Auth(models.Model):
     def __str__(self):
         return "%s:%s" % (self.user, '*' * len(self.password))
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s:%s" % (self.user, '*' * len(self.password))
 
 
@@ -191,9 +191,9 @@ class Client(models.Model):
         If False, the client is a persistent client and subscription information and queued messages will be retained
         when the client disconnects.
     """
-    server = models.ForeignKey(Server)
-    auth = models.ForeignKey(Auth, blank=True, null=True)
-    client_id = models.ForeignKey(ClientId, null=True, blank=True)
+    server = models.ForeignKey(Server, on_delete=models.CASCADE)
+    auth = models.ForeignKey(Auth, on_delete=models.CASCADE, blank=True, null=True)
+    client_id = models.ForeignKey(ClientId, on_delete=models.CASCADE, null=True, blank=True)
 
     keepalive = models.IntegerField(default=60)
     clean_session = models.BooleanField(default=True)
@@ -201,7 +201,7 @@ class Client(models.Model):
     def __str__(self):
         return "%s - %s" % (self.client_id, self.server)
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s - %s" % (self.client_id, self.server)
 
     def get_mqtt_client(self, empty_client_id=False):
@@ -254,8 +254,8 @@ class Data(models.Model):
 
         :var datetime : Datetime of last change
     """
-    client = models.ForeignKey(Client)
-    topic = models.ForeignKey(Topic)
+    client = models.ForeignKey(Client, on_delete=models.CASCADE)
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
     qos = models.IntegerField(choices=PROTO_MQTT_QoS, default=0)
     payload = models.TextField(blank=True, null=True)
     retain = models.BooleanField(default=False)
@@ -267,7 +267,7 @@ class Data(models.Model):
     def __str__(self):
         return "%s - %s - %s" % (self.payload, self.topic, self.client)
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s - %s - %s" % (self.payload, self.topic, self.client)
 
     def update_remote(self):

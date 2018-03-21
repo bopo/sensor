@@ -1,11 +1,11 @@
-from django.http import HttpResponse, HttpResponseForbidden
-from django.views.generic.base import View
-from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model
+from django.http import HttpResponse, HttpResponseForbidden
+from django.views.decorators.csrf import csrf_exempt
+from django.views.generic.base import View
 
-from sensor.models import Topic, ClientId, ACL, PROTO_MQTT_ACC
-from sensor.mosquitto.auth_plugin.auth import has_permission
+from sensor.models import Topic, ACL, PROTO_MQTT_ACC, Device
+from .auth import has_permission
 
 
 class Auth(View):
@@ -27,35 +27,35 @@ class Auth(View):
         :return:
         """
         data = {}
-        
+
         if hasattr(request, 'POST'):
             data = request.POST
         elif hasattr(request, 'DATA'):  # pragma: no cover
             data = request.DATA
 
         topics = Topic.objects.filter(name=data.get('topic'))
-        
+
         try:
             acc = int(data.get('acc', None))
         except:
             acc = None
-        
+
         allow = True
-        
+
         if topics.exists() and acc in dict(PROTO_MQTT_ACC).keys():
             topic = topics.get()
             acls = ACL.objects.filter(acc=acc, topic=topic,
                                       password__isnull=False, password=data.get('password'))
             if acls.exists():
                 allow = True
-        
+
         if not allow:
             user = authenticate(username=data.get('username'), password=data.get('password'))
             allow = has_permission(user, data.get('topic', '#'), acc)
 
         if not allow:
             return HttpResponseForbidden('')
-        
+
         return HttpResponse('')
 
 
@@ -74,21 +74,22 @@ class Superuser(View):
         :return:
         """
         data = {}
-        
+
         if hasattr(request, 'POST'):
             data = request.POST
         elif hasattr(request, 'DATA'):  # pragma: no cover
             data = request.DATA
 
         user_model = get_user_model()
-        
+
         try:
             user = user_model.objects.get(username=data.get('username'), is_active=True)
+
             if user.is_superuser:
                 return HttpResponse('')
         except user_model.DoesNotExist:
             pass
-        
+
         return HttpResponseForbidden('')
 
 
@@ -115,32 +116,41 @@ class Acl(View):
         elif hasattr(request, 'DATA'):  # pragma: no cover
             data = request.DATA
 
-        user = None
-        users = get_user_model().objects.filter(username=data.get('username'), is_active=True)
-        
-        if users.exists():
-            user = users.latest('pk')
+        # print(request.DATA)
 
-        topic = None
-        topics = Topic.objects.filter(name=data.get('topic', '#'))
-        
-        if topics.exists():
-            topic = topics.get()
-
-        clientid = None
-        clientids = ClientId.objects.filter(name=data.get('clientid'))
-        
-        if clientids.exists():
-            clientid = clientids.get()
+        # user = None
+        # users = get_user_model().objects.filter(username=data.get('username'), is_active=True)
 
         try:
-            acc = int(data.get('acc', None))
-        except:
-            acc = None
-
-        return HttpResponse('')
-
-        if not has_permission(user, topic, acc=acc, clientid=clientid):
+            device = Device.objects.filter(appkey=data.get('username'), secret=data.get('password'), is_active=True)
+            if device:
+                return HttpResponse('')
+        except Device.DoesNotExist:
             return HttpResponseForbidden('')
-        
-        return HttpResponse('')
+
+        # if users.exists():
+        #     user = users.latest('pk')
+        #
+        # topic = None
+        # topics = Topic.objects.filter(name=data.get('topic', '#'))
+        #
+        # if topics.exists():
+        #     topic = topics.get()
+        #
+        # clientid = None
+        # clientids = ClientId.objects.filter(name=data.get('clientid'))
+        #
+        # if clientids.exists():
+        #     clientid = clientids.get()
+        #
+        # try:
+        #     acc = int(data.get('acc', None))
+        # except:
+        #     acc = None
+        #
+        # # return HttpResponse('')
+        #
+        # if not has_permission(user, topic, acc=acc, clientid=clientid):
+        #     return HttpResponseForbidden('')
+        #
+        # return HttpResponse('')

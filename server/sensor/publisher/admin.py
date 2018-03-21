@@ -1,7 +1,5 @@
 from django.contrib import admin
 
-from sensor.publisher import models
-
 
 class SecureConfAdmin(admin.ModelAdmin):
     search_fields = ('ca_certs', 'ciphers')
@@ -18,7 +16,7 @@ class ServerAdmin(admin.ModelAdmin):
 
 class AuthAdmin(admin.ModelAdmin):
     search_fields = ('user',)
-    list_display = ('user', )
+    list_display = ('user',)
 
 
 class ClientAdmin(admin.ModelAdmin):
@@ -33,8 +31,8 @@ class DataLogAdmin(admin.ModelAdmin):
     date_hierarchy = 'datetime'
     list_display = ('topic', 'qos', 'retain', 'datetime')
 
-admin.site.register(models.SecureConf, SecureConfAdmin)
-admin.site.register(models.Server, ServerAdmin)
-admin.site.register(models.Auth, AuthAdmin)
-admin.site.register(models.Client, ClientAdmin)
-admin.site.register(models.Data, DataLogAdmin)
+# admin.site.register(models.SecureConf, SecureConfAdmin)
+# admin.site.register(models.Server, ServerAdmin)
+# admin.site.register(models.Auth, AuthAdmin)
+# admin.site.register(models.Client, ClientAdmin)
+# admin.site.register(models.Data, DataLogAdmin)

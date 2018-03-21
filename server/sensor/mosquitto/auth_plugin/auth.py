@@ -18,8 +18,10 @@ def has_permission(user, topic, acc=None, clientid=None):
     """
 
     allow = False
+    
     if hasattr(settings, 'MQTT_ACL_ALLOW'):
         allow = settings.MQTT_ACL_ALLOW
+    
     if hasattr(settings, 'MQTT_ACL_ALLOW_ANONIMOUS'):
         if user is None or user.is_anonymous():
             allow = settings.MQTT_ACL_ALLOW_ANONIMOUS & allow
@@ -39,8 +41,6 @@ def has_permission(user, topic, acc=None, clientid=None):
         allow = acl.has_permission(user=user)
     else:
         allow = ACL.get_default(acc, user=user)
-
-        # TODO search best candidate
 
     return allow
 

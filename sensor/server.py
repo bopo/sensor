@@ -5,26 +5,29 @@ import threading
 import paho.mqtt.client as mqtt
 import logging
 
-logger = logging.getLogger('sensor')
+logger = logging.getLogger('server')
 
 class MQTTServer:
     client = mqtt.Client()
 
-    def __init__(self, host, port, debug=False):
+    def __init__(self, host, port, debug=False, tls=True):
         self._host = host
         self._port = int(port)
 
-        if debug:
-            try:
-                import coloredlogs
-                coloredlogs.install(level='DEBUG')
-            except ImportError as e:
-                logging.basicConfig(level = logging.DEBUG, format = '%(asctime)s %(name)s %(levelname)s %(message)s')
-
         self.client.reinitialise(client_id='master', clean_session=True, userdata=None)
-        self.client.tls_set(ca_certs='./.certs')
+        
+        if tls == True:
+            self.client.tls_set(ca_certs='./.certs')
+        
+        if debug == True:
+            self.client.on_log = self._on_log
+            logging.basicConfig(level = logging.DEBUG, format = '%(asctime)s %(name)s %(levelname)s %(message)s')
+
         self.client.on_connect = self._on_connect  # 设置连接上服务器回调函数
         self.client.on_message = self._on_message  # 设置接收到服务器消息回调函数
+    
+    def _on_log(self, mqttc, obj, level, string):
+        logger.info("Log: %s" % string)
 
     def connect(self, appkey='master', secret='master'):
         self.client.username_pw_set(appkey, secret)
@@ -50,7 +53,7 @@ class MQTTServer:
 
     def _on_message(self, client, userdata, msg):  # 从服务器接受到消息后回调此函数
         logger.debug("主题:" + (str(msg.topic)) + " 消息:" + (msg.payload.decode()))
-        topic = msg.payload.decode().split(':')[0]
+        topic = 'device/' + msg.payload.decode().split(':')[0]
         client.publish(topic, 'ok!')
         logger.debug(userdata)
      
