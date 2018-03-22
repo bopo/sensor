@@ -7,7 +7,7 @@ import re
 from django.core.cache import cache
 
 try:
-    import cPickle as pickle
+    import pickle as pickle
 except ImportError:
     import pickle
 
@@ -18,7 +18,7 @@ class WeiSession(object):
     """
 
     def __init__(self, session_id):
-        if not isinstance(session_id, (str, unicode, int)):
+        if not isinstance(session_id, (str, int)):
             raise TypeError("Argument openid [%s] must be a str/unicode/int object!")
 
         self.session_id = session_id

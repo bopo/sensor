@@ -31,7 +31,7 @@ def test_handler(recv_msg, *args, **kwargs):
         'url': 'http://www.baidu.com'
     })
     xml = reply.render()
-    print xml
+    print(xml)
     return HttpResponse(xml)
 
 
@@ -132,14 +132,14 @@ def tuling_auto_reply(msg):
             result = respond['url']
         elif respond['code'] == 302000:
             for k in respond['list']:
-                result = result + u"【" + k['source'] + u"】 " + \
+                result = result + "【" + k['source'] + "】 " + \
                          k['article'] + "\t" + k['detailurl'] + "\n"
         else:
             result = respond['text'].replace('<br>', '  ')
 
         return result
     else:
-        return u"知道啦"
+        return "知道啦"
 
 
 def tuling_handler(recv_msg, *args, **kwargs):

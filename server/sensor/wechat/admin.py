@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+
 
 from django.conf import settings
 from django.contrib import admin
@@ -61,7 +61,7 @@ class WechatMenuAdmin(MPTTModelAdmin, SortableModelAdmin):
             "matchrule": {
                 "group_id": "",
                 "sex": "",
-                "country": u"中国",
+                "country": "中国",
                 "province": "",
                 "city": "",
                 "client_platform_type": ""
@@ -112,7 +112,7 @@ class WechatMenuAdmin(MPTTModelAdmin, SortableModelAdmin):
 
         self.message_user(request, "成功发布菜单.")
 
-    make_publish.short_description = u"发布所选菜单"
+    make_publish.short_description = "发布所选菜单"
 
     actions = [make_publish, 'delete_selected']
 

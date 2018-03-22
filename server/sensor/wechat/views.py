@@ -1,5 +1,3 @@
-# coding:utf-8
-
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
@@ -16,7 +14,7 @@ def home(request):
     if request.method == 'GET':
         response = HttpResponse()
 
-        if check_signature(request, settings.TOKEN):
+        if check_signature(request, settings.WECHAT_TOKEN):
             response.write(request.GET.get('echostr'))
             return response
         else:

@@ -1,6 +1,6 @@
 # coding:utf-8
 import re
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 
 from django.core.cache import cache
 from django.shortcuts import render_to_response
@@ -10,7 +10,7 @@ from django.template.loader import render_to_string
 from . import TextMsg, ImgMsg, PicTextMsg, PTItem
 
 try:
-    import cPickle as pickle
+    import pickle as pickle
 except ImportError:
     import pickle
 
@@ -30,7 +30,7 @@ class Session(object):
     """
 
     def __init__(self, session_id):
-        if not isinstance(session_id, (str, unicode, int)):
+        if not isinstance(session_id, (str, int)):
             raise TypeError("Argument openid [%s] must be a str/unicode/int object!")
 
         self.session_id = session_id
@@ -68,8 +68,9 @@ def create_menu(access_token, menu_list):
     encoded_data = data.encode('utf-8')
 
     try:
-        result = urllib2.urlopen(url, encoded_data, 20).read()
-    except urllib2.URLError, urllib2.HTTPError:
+        result = urllib.request.urlopen(url, encoded_data, 20).read()
+    except urllib.error.URLError as xxx_todo_changeme:
+        urllib.error.HTTPError = xxx_todo_changeme
         return False
 
     if result:

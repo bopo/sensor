@@ -12,6 +12,10 @@ gunicorn = "*"
 djangorestframework = "*"
 django-mptt = "*"
 django-suit = "*"
+requests = "*"
+django-model-utils = "*"
+wechatpy = "*"
+cryptography = "*"
 
 [dev-packages]
 

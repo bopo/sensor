@@ -7,7 +7,7 @@ default_app_config = 'sensor.wechat.WechatConfig'
 
 class WechatConfig(AppConfig):
     name = 'sensor.wechat'
-    verbose_name = _(u'微信数据')
+    verbose_name = _('微信数据')
 
 
 import os
