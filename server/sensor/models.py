@@ -34,7 +34,7 @@ class DeviceModel(models.Model):
 
 
 class Device(StatusModel, TimeStampedModel):
-    STATUS = Choices(('normal', '无状态'), ('agree', '同意'), ('reject', '拒绝'))
+    STATUS = Choices(('free', '空闲'), ('busy', '忙碌'), ('cool', '冷却'))
     model = models.ForeignKey(DeviceModel, verbose_name='机器型号', on_delete=models.CASCADE)
     name = models.CharField(verbose_name='设备名称', max_length=23, db_index=True, blank=True, unique=True)
     appkey = models.CharField(verbose_name='认证标示', max_length=16, db_index=True, blank=True, unique=True)
@@ -49,7 +49,7 @@ class Device(StatusModel, TimeStampedModel):
 
 
 class Records(StatusModel, TimeStampedModel):
-    STATUS = Choices(('normal', '无状态'), ('agree', '同意'), ('reject', '拒绝'))
+    STATUS = Choices(('success', '成功'), ('cancel', '取消'), ('refund', '退款'))
     member = models.ForeignKey(Member, on_delete=models.CASCADE)
     device = models.ForeignKey(Device, on_delete=models.CASCADE)
 

@@ -13,10 +13,10 @@ from sensor import UARTSensor
 env = environ.Env()
 env.read_env()
 
-APPKEY = env('CLIENT_APPKEY', default='')
-SECRET = env('CLIENT_SECRET', default='')
+APPKEY = env('CLIENT_APPKEY', default='80e65000a9b4')
+SECRET = env('CLIENT_SECRET', default='a4327198-2cd8-11e8-9dc8-80e65000a9b4')
 
-SERVER_HOST = env('SERVER_HOST', default='127.0.0.1')
+SERVER_HOST = env('SERVER_HOST', default='103.200.97.197')
 SERVER_PORT = env('SERVER_PORT', default='1883')
 
 SENSOR_PORT = env('SENSOR_PORT', default='/dev/tty.USB0')
@@ -47,8 +47,8 @@ def client(debug=False, tls=False):
     client.loop()
 
     while True:
-        client.publish('master', json.dumps([1,2,3]))
-        time.sleep(.1)   
+        client.publish('master', json.dumps({'status': 'cool', 'appkey': APPKEY}))
+        time.sleep(1)   
 
 @cli.command(help='运行服务端')
 @click.option('-d', '--debug', is_flag=True, help='调试模式.')

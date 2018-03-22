@@ -1,5 +1,6 @@
 from django.contrib import admin
-
+from django.utils.html import format_html_join
+from django.utils.safestring import mark_safe
 from sensor import models
 
 
@@ -21,8 +22,16 @@ class ClientIdAdmin(admin.ModelAdmin):
 
 
 class DeviceAdmin(admin.ModelAdmin):
-    list_display = ('appkey', 'name', 'model', 'status')
 
+    def preview(self, obj):
+        return mark_safe("<span style='color: blue;font-weight: bold;'>%s</span>" % obj.get_status_display())
+        # return mark_safe("<span style='color: green;font-weight: bold;'>%s</span>" % obj.get_status_display())
+        # return mark_safe("<span style='color: red;font-weight: bold;'>%s</span>" % obj.get_status_display())
+
+    preview.short_description = '状态'
+    
+    date_hierarchy = 'created'
+    list_display = ('appkey', 'name', 'model', 'preview')
 
 class DeviceModelAdmin(admin.ModelAdmin):
     list_display = ('name',)

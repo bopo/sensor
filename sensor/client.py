@@ -40,7 +40,7 @@ class MQTTClient:
         self.client.connect(self._host, self._port, 60)  # 连接服务器,端口为 1883,维持心跳为60秒
 
     def publish(self, topic, data):
-        data = '%s:%s' % (self._name, data)
+        # data = '%s:%s' % (self._name, data)
         self.client.publish(topic, data)
         # logger.debug('publish: '+ topic +" "+ data)
 
