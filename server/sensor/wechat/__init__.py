@@ -54,11 +54,10 @@ class WeiMsg(object):
     """输入一个xml文本字符串对象，生成一个object并返回"""
 
     def get_info(self, regx, msg):
-        result = re.findall(regx, msg)
+        result = regx.findall(msg)
+
         if result:
             return result[0]
-        else:
-            return ''
 
     def get_text_msg(self, msg):
         self.content = self.get_info(re_text_content, msg)
@@ -130,6 +129,9 @@ class BaseReMsg(object):
         :param func_flag: weichat func_flag.
         :return:
         """
+
+        print(ctime)
+
         self.source = from_user
         self.target = to_user
 
@@ -240,9 +242,10 @@ def check_signature(request, token):
         token = token
 
         tmplist = sorted([token, timestamp, nonce])
+
         newstr = ''.join(tmplist)
         sha1result = hashlib.sha1()
-        sha1result.update(newstr)
+        sha1result.update(newstr.encode('utf-8'))
 
         if sha1result.hexdigest() == str(signature):
             return True

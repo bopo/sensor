@@ -1,21 +1,22 @@
 [[source]]
-url = "https://pypi.tuna.tsinghua.edu.cn/simple" 
-verify_ssl = false
+url = "http://mirrors.aliyun.com/pypi/simple/"
+verify_ssl = true
 name = "pypi"
 
 [packages]
-django = "<3"
+django = "*"
 paho-mqtt = "*"
 django-extensions = "*"
 gunicorn = "*"
-psycopg2-binary = "*"
+"psycopg2-binary" = "*"
 djangorestframework = "*"
 django-mptt = "*"
 django-suit = "*"
 requests = "*"
 django-model-utils = "*"
 wechatpy = "*"
-cryptography = "*"
+pycrypto = "*"
+gevent = "*"
 
 [dev-packages]
 

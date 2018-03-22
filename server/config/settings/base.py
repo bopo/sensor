@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'sensor',
     'sensor.mosquitto.auth_plugin',
     'sensor.publisher',
+    'sensor.payment',
     'sensor.wechat',
 ]
 
@@ -200,3 +201,7 @@ try:
 
 except ImportError as e:
     raise e
+
+WECHAT_TOKEN  = '6436c832cc5e5df6'
+WECHAT_APPKEY = 'wx95d4b735c05ff6a7'    
+WECHAT_SECRET = '5c330e437a2ebf13faf122551b103520'    

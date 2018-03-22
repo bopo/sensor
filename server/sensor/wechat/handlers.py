@@ -30,8 +30,8 @@ def test_handler(recv_msg, *args, **kwargs):
         'image': 'http://pic1.win4000.com/pic/b/6e/5aee949474.jpg',
         'url': 'http://www.baidu.com'
     })
+
     xml = reply.render()
-    print(xml)
     return HttpResponse(xml)
 
 
@@ -73,6 +73,7 @@ def about_handler(recv_msg, *args, **kwargs):
 def help_handler(recv_msg, *args, **kwargs):
     content = """
     --键入小写命令--
+    http://device.bopo.me/wechat/authorize
     """
     return text_response(recv_msg, content)
 
