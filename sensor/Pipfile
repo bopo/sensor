@@ -7,6 +7,9 @@ name = "pypi"
 paho-mqtt = "*"
 twisted-mqtt = "*"
 aiocoap = "*"
+click = "*"
+django-environ = "*"
+pyserial = "*"
 
 [dev-packages]
 
