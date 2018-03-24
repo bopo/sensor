@@ -39,7 +39,7 @@ start:
 setup:
 	docker-compose up -d
 	docker-compose run --rm django python3 manage.py migrate
-	docker-compose run --rm django python3 manage.py createsuperuser
+	docker-compose run --rm django python3 manage.py loaddata initdb.json
 	docker-compose run --rm django python3 manage.py collectstatic --no-input
 
 restart: 
