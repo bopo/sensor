@@ -28,6 +28,10 @@ services:
   mosquitto:
     restart: always
     image: mosquitto:alpine
+    depends_on:
+      - django 
+    links:
+      - django         
     ports: 
       - "8883:1883"  
       - "9008:9001"  

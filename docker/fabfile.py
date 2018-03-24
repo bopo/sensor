@@ -42,6 +42,12 @@ def pull():
     local('rm -rf project/app && git clone ssh://git@10.7.7.22:10022/sector3/passport.git project/app')
 
 @task
+def cert():
+    '''生成证书文件'''
+    local('./scripts/gencert.sh')
+
+
+@task
 def stat():
     '''更新静态文件'''
     with cd(env.remote_dir):

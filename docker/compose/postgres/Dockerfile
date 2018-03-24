@@ -1,5 +1,6 @@
 FROM postgres:alpine
 
+ENV LANG C.UTF-8
 # add backup scripts
 ADD backup.sh /usr/local/bin/backup
 ADD restore.sh /usr/local/bin/restore
