@@ -1,0 +1,24 @@
+[[source]]
+url = "http://mirrors.aliyun.com/pypi/simple/"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "*"
+paho-mqtt = "*"
+django-extensions = "*"
+gunicorn = "*"
+"psycopg2-binary" = "*"
+djangorestframework = "*"
+django-mptt = "*"
+django-suit = "*"
+requests = "*"
+django-model-utils = "*"
+wechatpy = "*"
+pycrypto = "*"
+gevent = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.6"

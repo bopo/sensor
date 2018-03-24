@@ -1,0 +1,13 @@
+pycrypto
+django
+paho-mqtt
+django-extensions
+gunicorn
+psycopg2-binary
+djangorestframework
+django-mptt
+django-suit
+requests
+django-model-utils
+wechatpy
+cryptography
