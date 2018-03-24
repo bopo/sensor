@@ -1,10 +1,8 @@
-
 from django.utils.translation import ugettext_lazy as _
 from django.utils.deconstruct import deconstructible
 from django.core.exceptions import ValidationError
 from django.utils.encoding import force_text
 from sensor.protocol import *
-
 
 @deconstructible
 class ClientIdValidator(object):

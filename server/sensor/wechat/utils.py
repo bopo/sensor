@@ -86,13 +86,12 @@ def render_from_string(string, data):
 
 
 def text_response(recv_msg, content):
-    print(recv_msg.create_time)
     msg = TextMsg(recv_msg.to_user_name, recv_msg.from_user_name, recv_msg.create_time)
-
     plugin_dict = {}
 
     for plugin in PLUGINS:
         result = plugin.processor(recv_msg)
+        
         if isinstance(result, dict):
             plugin_dict.update(result)
 

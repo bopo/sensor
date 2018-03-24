@@ -27,7 +27,6 @@ def home(request):
             return response
 
     if request.method == 'POST':
-        print(request.body)
         recv_msg = WeiMsg(request.body.decode())
 
         for router in routers:

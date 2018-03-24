@@ -1,11 +1,30 @@
-from django.contrib.auth import authenticate
-from django.contrib.auth import get_user_model
+import hashlib
+
+from django.contrib.auth import authenticate, get_user_model
 from django.http import HttpResponse, HttpResponseForbidden
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import View
 
-from sensor.models import Topic, ACL, PROTO_MQTT_ACC, Device
+from sensor.models import ACL, PROTO_MQTT_ACC, Device, Topic
+
 from .auth import has_permission
+
+
+def check_signature(username=None, password=None, secret=None):
+    """Verify if the author of received msg is tencent."""
+
+    if username and secret and password:
+        tmplist = sorted([username, secret])
+        newtext = ''.join(tmplist).encode('utf-8')
+        results = hashlib.sha1()
+        results.update(newtext)
+
+        if results.hexdigest() == str(password):
+            return True
+        else:
+            return False
+    
+    return False
 
 
 class Auth(View):
@@ -54,9 +73,9 @@ class Auth(View):
             allow = has_permission(user, data.get('topic', '#'), acc)
 
         if not allow:
-            return HttpResponseForbidden('')
+            return HttpResponseForbidden('no')
 
-        return HttpResponse('')
+        return HttpResponse('ok')
 
 
 class Superuser(View):
@@ -86,11 +105,11 @@ class Superuser(View):
             user = user_model.objects.get(username=data.get('username'), is_active=True)
 
             if user.is_superuser:
-                return HttpResponse('')
+                return HttpResponse('ok')
         except user_model.DoesNotExist:
             pass
 
-        return HttpResponseForbidden('')
+        return HttpResponseForbidden('no')
 
 
 class Acl(View):
@@ -116,41 +135,16 @@ class Acl(View):
         elif hasattr(request, 'DATA'):  # pragma: no cover
             data = request.DATA
 
-        # print(request.DATA)
-
-        # user = None
-        # users = get_user_model().objects.filter(username=data.get('username'), is_active=True)
+        username = data.get('username')
+        password = data.get('password')
 
         try:
-            device = Device.objects.filter(appkey=data.get('username'), secret=data.get('password'), is_active=True)
-            if device:
-                return HttpResponse('')
+            device = Device.objects.filter(appkey=username, is_active=True).get()
+            verify = check_signature(username, password, device.secret)
+            
+            if verify:
+                return HttpResponse('ok')
+            else:
+                return HttpResponseForbidden('no')
         except Device.DoesNotExist:
-            return HttpResponseForbidden('')
-
-        # if users.exists():
-        #     user = users.latest('pk')
-        #
-        # topic = None
-        # topics = Topic.objects.filter(name=data.get('topic', '#'))
-        #
-        # if topics.exists():
-        #     topic = topics.get()
-        #
-        # clientid = None
-        # clientids = ClientId.objects.filter(name=data.get('clientid'))
-        #
-        # if clientids.exists():
-        #     clientid = clientids.get()
-        #
-        # try:
-        #     acc = int(data.get('acc', None))
-        # except:
-        #     acc = None
-        #
-        # # return HttpResponse('')
-        #
-        # if not has_permission(user, topic, acc=acc, clientid=clientid):
-        #     return HttpResponseForbidden('')
-        #
-        # return HttpResponse('')
+            return HttpResponseForbidden('no')

@@ -29,9 +29,10 @@ class MQTTServer:
     def _on_log(self, mqttc, obj, level, string):
         logger.info("Log: %s" % string)
 
-    def connect(self, appkey='master', secret='master'):
-        self.client.username_pw_set(appkey, secret)
-        self.client.connect(self._host, self._port, 60)  # 连接服务器,端口为1883,维持心跳为60秒
+    def connect(self, appkey='sensor', secret='sensor'):
+        passowrd = self._signature(appkey, secret)
+        self.client.username_pw_set(appkey, passowrd)
+        self.client.connect(self._host, self._port, 60)  # 连接服务器,端口为 1883,维持心跳为60秒
 
     def publish(self, topic, data):
         self.client.publish(topic, data)
@@ -56,7 +57,17 @@ class MQTTServer:
         topic = 'device/' + msg.payload.decode().split(':')[0]
         client.publish(topic, 'ok!')
         logger.debug(userdata)
-     
+
+    def _signature(appkey=None, secret=None):
+        if appkey and secret:
+            tmplist = sorted([appkey, secret])
+            newtext = ''.join(tmplist).encode('utf-8')
+            results = hashlib.sha1()
+            results.update(newtext)
+            return results.hexdigest()
+        
+        return None
+             
 if __name__ == '__main__':
     client = MQTTServer('127.0.0.1', 1883)
     client.connect()

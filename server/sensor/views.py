@@ -44,11 +44,6 @@ class Device(View):
         elif hasattr(request, 'DATA'):  # pragma: no cover
             data = request.DATA
 
-        # print(request.DATA)
-
-        # user = None
-        # users = get_user_model().objects.filter(username=data.get('username'), is_active=True)
-
         try:
             device = Device.objects.filter(appkey=data.get('username'), secret=data.get('password'), is_active=True)
             if device:

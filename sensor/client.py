@@ -3,6 +3,7 @@ import json
 import logging
 import ssl
 import threading
+import hashlib
 import time
 
 import paho.mqtt.client as mqtt
@@ -36,7 +37,8 @@ class MQTTClient:
         logger.info("Log: %s" % string)
 
     def connect(self, appkey='sensor', secret='sensor'):
-        self.client.username_pw_set(appkey, secret)
+        passowrd = self._signature(appkey, secret)
+        self.client.username_pw_set(appkey, passowrd)
         self.client.connect(self._host, self._port, 60)  # 连接服务器,端口为 1883,维持心跳为60秒
 
     def publish(self, topic, data):
@@ -68,7 +70,17 @@ class MQTTClient:
         #     client.publish('master', result)
         # except Exception as e:
         #     client.publish('master', 'method error.')
+
+    def _signature(appkey=None, secret=None):
+        if appkey and secret:
+            tmplist = sorted([appkey, secret])
+            newtext = ''.join(tmplist).encode('utf-8')
+            results = hashlib.sha1()
+            results.update(newtext)
+            return results.hexdigest()
         
+        return None
+
 if __name__ == '__main__':
     client = MQTTClient(host='103.200.97.197', name='80e65000a9b4', port=1883, tls=False, debug=True)
     client.connect('80e65000a9b4', '80e65000a9b4')
