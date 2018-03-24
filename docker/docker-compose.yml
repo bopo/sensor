@@ -29,8 +29,8 @@ services:
     restart: always
     image: mosquitto:alpine
     ports: 
-      - "1883:1883"  
-      - "9001:9001"  
+      - "8883:1883"  
+      - "9008:9001"  
     volumes:
       - ./project/etc/mqtt/config:/mqtt/config:ro
       - ./project/etc/mqtt/data:/mqtt/data
