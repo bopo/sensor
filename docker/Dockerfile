@@ -1,4 +1,4 @@
-FROM alpine:3.6-passport
+FROM python:alpine
 ENV PYTHONUNBUFFERED 1
 
 COPY ./project/app /app
