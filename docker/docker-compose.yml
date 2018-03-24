@@ -35,7 +35,7 @@ services:
       - ./project/etc/mqtt/config:/mqtt/config:ro
       - ./project/etc/mqtt/data:/mqtt/data
       - ./project/etc/mqtt/logs:/mqtt/log
-    env_file: ./env.docker
+    env_file: ./project/app/env.docker
 
   django:
     restart: always

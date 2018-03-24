@@ -11,7 +11,7 @@ from server import MQTTServer
 from sensor import UARTSensor
 
 env = environ.Env()
-env.read_env()
+env.read_env('env.sensor')
 
 APPKEY = env('CLIENT_APPKEY', default='80e65000a9b4')
 SECRET = env('CLIENT_SECRET', default='a4327198-2cd8-11e8-9dc8-80e65000a9b4')
@@ -22,6 +22,7 @@ SERVER_PORT = env('SERVER_PORT', default='1883')
 SENSOR_PORT = env('SENSOR_PORT', default='/dev/tty.USB0')
 SENSOR_RATE = env('SENSOR_RATE', default='9600')
 SENSOR_MODE = env('SENSOR_MODE', default='0101')
+SENSOR_TLS = env('SENSOR_TLS', default=0)
 
 @click.group()
 @click.option('-v', '--verbose', count=True)
@@ -32,7 +33,7 @@ def cli(ctx, verbose):
 @cli.command(help='运行客户端')
 @click.option('-d', '--debug', is_flag=True, help='调试模式.')
 @click.option('--tls', is_flag=True, help='tls模式.')
-def client(debug=False, tls=False):    
+def client(debug=False, tls=bool(SENSOR_TLS)):    
     print('APPKEY: ', APPKEY)
     print('SECRET: ', SECRET)
     print('')
@@ -53,7 +54,7 @@ def client(debug=False, tls=False):
 @cli.command(help='运行服务端')
 @click.option('-d', '--debug', is_flag=True, help='调试模式.')
 @click.option('--tls', is_flag=True, help='tls模式.')
-def server(debug=False, tls=False):
+def server(debug=False, tls=bool(SENSOR_TLS)):
     print('>> Server runing...')
     client = MQTTServer(host=SERVER_HOST, port=SERVER_PORT, debug=debug, tls=tls)
     client.connect(APPKEY, SECRET)
