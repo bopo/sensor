@@ -33,8 +33,8 @@ services:
       - "9008:9001"  
     volumes:
       - ./project/etc/mqtt/config:/mqtt/config:ro
-      - ./project/etc/mqtt/data:/mqtt/data
-      - ./project/etc/mqtt/logs:/mqtt/log
+      - ./project/etc/mqtt/data:/mqtt/data:Z
+      - ./project/etc/mqtt/logs:/mqtt/log:Z
     env_file: ./project/app/env.docker
 
   django:
