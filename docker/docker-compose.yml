@@ -39,7 +39,7 @@ services:
 
   django:
     restart: always
-    image: django:passport
+    image: django:alpine
     depends_on:
       - postgres
       - redis
