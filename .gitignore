@@ -3,6 +3,10 @@
 *.sql
 *.pyc
 *.pyo
+*.crt
+*.key
+*.csr
+*.srl
 *.db
 *~
 .*

@@ -8,9 +8,9 @@ ENV LANG C.UTF-8
 RUN echo 'http://mirrors.aliyun.com/alpine/v3.7/main/' > /etc/apk/repositories
 RUN echo 'http://mirrors.aliyun.com/alpine/v3.7/community/' >> /etc/apk/repositories
 
-RUN apk add --no-cache ca-certificates mosquitto
+RUN apk add --no-cache ca-certificates mosquitto curl-dev openssl-dev mosquitto-dev openssl bash
 # make auth-plugin
-RUN apk add --no-cache --virtual .build-deps curl-dev openssl-dev g++ automake autoconf make git mosquitto-dev
+RUN apk add --no-cache --virtual .build-deps g++ automake autoconf make git 
 
 RUN mkdir -p /build
 RUN mkdir -p /etc/mosquitto/conf.d/
@@ -24,6 +24,8 @@ COPY script/config.mk /build/mosquitto-auth-plug/config.mk
 RUN make -C /build/mosquitto-auth-plug
 
 RUN cp /build/mosquitto-auth-plug/auth-plug.so /usr/lib/mosquitto-auth-plugin/
+RUN rm -rf /etc/ssl/openssl.cnf
+RUN wget http://web.mit.edu/crypto/openssl.cnf -P /etc/ssl
 
 # RUN apk del .fetch-deps
 RUN apk del .build-deps
@@ -32,12 +34,13 @@ RUN rm -fr /build
 # RUN mkdir -p /mqtt/config /mqtt/data /mqtt/log
 COPY config /etc/mosquitto
 RUN chown -R mosquitto:mosquitto /etc/mosquitto
+RUN chown -R mosquitto:mosquitto /var/log
 
-VOLUME ["/etc/mosquitto", "/var/lib/mosquitto", "/var/log"]
+VOLUME ["/etc/mosquitto", "/var/lib/mosquitto", "/var/log", "/certs"]
 
-EXPOSE 1883 9001
+EXPOSE 1883 9001 8883
 
 ADD docker-entrypoint.sh /usr/bin/entrypoint.sh
 
 ENTRYPOINT ["/usr/bin/entrypoint.sh"]
-CMD ["/usr/sbin/mosquitto", "-c", "/mqtt/config/mosquitto.conf"]
+CMD ["/usr/sbin/mosquitto", "-c", "/etc/mosquitto/mosquitto.conf"]
