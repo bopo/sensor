@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+from datetime import timedelta
 
 try:
     from .base import *
@@ -12,10 +13,11 @@ INSTALLED_APPS += (
 )
 
 REST_FRAMEWORK = {
-    'EXCEPTION_HANDLER': 'service.kernel.exception.custom_exception_handler',
+    # 'EXCEPTION_HANDLER': 'service.kernel.exception.custom_exception_handler',
     # 'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.NamespaceVersioning',
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ),
@@ -27,8 +29,8 @@ REST_FRAMEWORK = {
         # 'rest_framework_yaml.renderers.YAMLRenderer',
     ),
     'DEFAULT_FILTER_BACKENDS': [
-        'url_filter.integrations.drf.DjangoFilterBackend',
-        'django_filters.rest_framework.DjangoFilterBackend',
+        # 'url_filter.integrations.drf.DjangoFilterBackend',
+        # 'django_filters.rest_framework.DjangoFilterBackend',
     ],
 
     # 'DEFAULT_FILTER_BACKENDS': (
@@ -64,3 +66,26 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 ACCOUNT_EMAIL_VERIFICATION = None
 OLD_PASSWORD_FIELD_ENABLED = True
+
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+    'VERIFYING_KEY': None,
+
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
+
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    'TOKEN_TYPE_CLAIM': 'token_type',
+
+    'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
+    'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
+}

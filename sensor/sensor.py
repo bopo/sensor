@@ -3,54 +3,93 @@ import json
 import serial
 import environ
 
-from models import MODELS
+from models import MACHINE
 
-env = environ.Env()
-env.read_env()
-
-SENSOR_PORT = env('SENSOR_PORT', default='/dev/tty.USB0')
-SENSOR_RATE = env('SENSOR_RATE', default='9600')
-SENSOR_MODE = env('SENSOR_MODE', default='0101')
 
 class UARTSensor:
 
-    def __init__(self, port=SENSOR_PORT, rate=SENSOR_RATE, mode=SENSOR_MODE):
-        # self.serial = serial.Serial(port, rate)
-        self.models = MODELS.get(mode, None)
-        # print(port, rate, mode)
+    def __init__(self, port=None, rate=None, mode=None):
+        self.mode = MACHINE.get(mode, None)
+        self.port = port
+        self.rate = rate
 
     def reinitialise(self, *args, **kwargs):
-        pass
+        for k,v in kwargs.items():
+            if hasattr(self, k):
+                if k == 'mode':
+                    setattr(self, 'mode', MACHINE.get(v, None))
+                else:
+                    setattr(self, k, v)
 
     def connect(self, *args, **kwargs):
         try:
-            self.serial = serial.Serial(SENSOR_PORT, SENSOR_RATE)
+            self.serial = serial.Serial(self.port, self.rate)
             return True
         except Exception as e:
             return False
 
-    def publish(self, method, value=None):
-        print('call', method, value)
-        
-        if value:
-            print('value', self.models.get(method)['value'] % value)
-        else:
-            print('value', self.models.get(method)['value'])
+
+    def publish(self, method='status', debug=False):
+        res = self.mode.get(method)
+        rev = self.push(res[0], res[1][-1] if debug is True else None)
+
+        print()
+        print(self.mode.get('title'))
+        print('method:', method)
+        print('cmmand:', res[0])
+        print('return:', res[1])
+        print('result:', rev)
+
+        if rev:
+            for x in res[1]:
+                if rev in x:
+                    try:
+                        print('values:', res[1].index(x), '=>', x,'............ok')
+                        return res[1].index(x)
+                    except ValueError as e:
+                        pass
+
+        print('values:', rev, '............no')
+        return None
+
+    def push(self, value=None, default=None):
+        if default:
+            return default
 
         try:
-            value = self.models.get(method) % value
-            return self.serial.write(value)
+            self.serial.write(value)
+            return self.serial.readline()
         except Exception as e:
             return False
 
-def main():
-    sensor = UARTSensor()
-    sensor.reinitialise()
+    # def publish(self, method, value=None):
+    #     print('call', method, value)
+        
+    #     if value:
+    #         print('value', self.MACHINE.get(method)['value'] % value)
+    #     else:
+    #         print('value', self.MACHINE.get(method)['value'])
 
-    sensor.publish('start')
-    sensor.publish('close')
-    sensor.publish('stats')
-    sensor.publish('clock', 10)
+    #     try:
+    #         value = self.MACHINE.get(method) % value
+    #         return self.serial.write(value)
+    #     except Exception as e:
+    #         return False
+
+
+def main():
+    for mode, _ in MACHINE.items():
+        print(mode)
+        sensor = UARTSensor(mode=mode)
+        sensor.reinitialise(mode=mode)
+        sensor.publish('start', debug=True)
+        input('press any key to continue.')
+        sensor.publish('close', debug=True)
+        input('press any key to continue.')
+        sensor.publish('stats', debug=True)
+        input('press any key to continue.')
+        sensor.publish('clock', debug=True)
+        input('press any key to continue.')
 
 if __name__ == '__main__':
     main()     

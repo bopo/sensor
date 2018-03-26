@@ -24,7 +24,9 @@ class MQTTClient:
         self.client.reinitialise(client_id=name, clean_session=True, userdata=None)
         
         if tls == True:
-            self.client.tls_set(ca_certs='./.certs')
+            self.client.tls_set(ca_certs='./certs/ca.crt', 
+                certfile='./certs/client.crt',
+                keyfile='./certs/client.key')
         
         if debug == True:
             self.client.on_log = self._on_log
@@ -67,11 +69,11 @@ class MQTTClient:
 
         # try:
         #     result = self.sensor.getattr(payload.get('method'))()
-        #     client.publish('master', result)
+        #     client.publish('console', result)
         # except Exception as e:
-        #     client.publish('master', 'method error.')
+        #     client.publish('console', 'method error.')
 
-    def _signature(appkey=None, secret=None):
+    def _signature(self, appkey=None, secret=None):
         if appkey and secret:
             tmplist = sorted([appkey, secret])
             newtext = ''.join(tmplist).encode('utf-8')
@@ -84,9 +86,9 @@ class MQTTClient:
 if __name__ == '__main__':
     client = MQTTClient(host='103.200.97.197', name='80e65000a9b4', port=1883, tls=False, debug=True)
     client.connect('80e65000a9b4', '80e65000a9b4')
-    client.publish('master', '0000')
+    client.publish('console', '0000')
     client.loop()
 
     while True:
-        client.publish('master', '0A00')
+        client.publish('console', '0A00')
         time.sleep(1)    

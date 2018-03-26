@@ -3,6 +3,7 @@ import json
 import time
 import threading
 import paho.mqtt.client as mqtt
+import hashlib
 import logging
 
 logger = logging.getLogger('server')
@@ -17,7 +18,9 @@ class MQTTServer:
         self.client.reinitialise(client_id='master', clean_session=True, userdata=None)
         
         if tls == True:
-            self.client.tls_set(ca_certs='./.certs')
+            self.client.tls_set(ca_certs='./certs/ca.crt', 
+                certfile='./certs/client.crt',
+                keyfile='./certs/client.key')
         
         if debug == True:
             self.client.on_log = self._on_log
@@ -58,7 +61,7 @@ class MQTTServer:
         client.publish(topic, 'ok!')
         logger.debug(userdata)
 
-    def _signature(appkey=None, secret=None):
+    def _signature(self, appkey=None, secret=None):
         if appkey and secret:
             tmplist = sorted([appkey, secret])
             newtext = ''.join(tmplist).encode('utf-8')

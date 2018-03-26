@@ -1,0 +1,12 @@
+<view class="container">
+  <view class="content">
+    <view class="version">
+      <view class="version-title">
+        <text class="title-name">订单</text>
+      </view>
+      <view bindtap="toggleLog">
+        <text class="version-log-link">扫码开机</text> 
+      </view>
+    </view>
+  </view>
+</view>

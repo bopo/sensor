@@ -1,0 +1,44 @@
+<!--about.wxml-->
+<view class="container">
+
+  <view class="content">
+    <view class="version">
+      <view class="version-title">
+        <text class="title-name">订单</text>
+      </view>
+      <view bindtap="toggleLog">
+        <!-- <text class="version-log-link update-log">消费记录</text>  -->
+        <text class="version-log-link">消费记录</text> 
+      </view>
+    </view>
+
+    <view class="log-list">
+
+      <view class="describe">
+          <view class="desc-title">
+            <text class="desc-v">前街健身馆</text>
+            <text class="desc-time">2017.08.02</text>
+          </view>
+          <!-- <text class="desc-content">修复BUG</text> -->
+          <!-- <view class="desc-list"> -->
+            <text class="desc-list-item">时长: 15 分钟</text>
+            <text class="desc-list-item">消费: 120.00 元</text>
+          <!-- </view> -->
+      </view>
+
+      <view class="describe">
+          <view class="desc-title">
+            <text class="desc-v">前街健身馆</text>
+            <text class="desc-time">2017.08.02</text>
+          </view>
+          <!-- <text class="desc-content">修复BUG</text> -->
+          <!-- <view class="desc-list"> -->
+            <text class="desc-list-item">时长: 15 分钟</text>
+            <text class="desc-list-item">消费: 120.00 元</text>
+          <!-- </view> -->
+      </view>
+      
+    </view>
+  </view>
+
+</view>

@@ -1,0 +1,50 @@
+{
+  "pages": [
+    "pages/home/index",
+    "pages/user/index",
+    "pages/user/issue",
+    
+    "pages/more/item/index",
+    "pages/more/item/lists",
+    "pages/more/scan/index",
+    "pages/more/help/index"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#7acfa6",
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "星迹美晒",
+    "backgroundColor": "#7acfa6",
+    "backgroundTextStyle": "light",
+    "enablePullDownRefresh": true
+  },
+  "tabBar": {
+    "color": "#7f848a",
+    "selectedColor": "#7acfa6",
+    "backgroundColor": "#f7f6fb",
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "text": "首页",
+        "iconPath": "images/home/index.png",
+        "selectedIconPath": "images/home/index@active.png"
+      },
+      {
+        "pagePath": "pages/more/item/index",
+        "text": "订单",
+        "iconPath": "images/home/news.png",
+        "selectedIconPath": "images/home/news@active.png"
+      },
+      {
+        "pagePath": "pages/user/index",
+        "text": "我的",
+        "iconPath": "images/home/more.png",
+        "selectedIconPath": "images/home/more@active.png"
+      }
+    ]
+  },
+  "networkTimeout": {
+    "request": 20000,
+    "uploadFile": 30000,
+    "downloadFile": 30000
+  }
+}

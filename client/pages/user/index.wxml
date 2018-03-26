@@ -1,0 +1,54 @@
+<!--more.wxml-->
+<view class="container">
+
+  <view class="user-info-box">
+    <block wx:if="{{is_bind}}">
+      <view class="user-info">
+        
+        <view class="info-hd">
+          <image class="user-avatar" src="{{user.wx.avatarUrl}}"></image>
+          <view class="user-title">
+            <text class="user-name">BoPo</text>
+            <text class="user-id">18500215943</text>
+          </view>
+          <view class="time-box">
+            <text class="time-term">余额: ￥2000.00</text>
+            <text class="time-now">消费: ￥1000.00</text>
+          </view>
+        </view>
+
+      </view>
+
+    </block>
+
+  </view>
+
+  <view class="more-list">
+
+
+    <navigator url="/pages/more/item/lists" class="about-link">
+      <view class="more-btn">
+        <image class="btn-icon" src="/static/user/append.png"></image>
+        <text class="btn-text">消费记录</text>
+        <view class="btn-open">
+            <image class="btn-enter" src="/static/user/enter.png"></image>
+        </view>
+      </view>
+    </navigator>
+
+    <navigator url="/pages/user/issue" class="issue-link">
+      <view class="more-btn">
+        <image class="btn-icon" src="/static/user/issue.png"></image>
+        <text class="btn-text">建议反馈</text>
+        <view class="btn-open">
+          <image class="btn-enter" src="/static/user/enter.png"></image>
+        </view>
+      </view>
+    </navigator>    
+  </view>
+
+<!--   <navigator class="login-btn">
+    <text>注销</text>
+  </navigator> -->
+
+</view>

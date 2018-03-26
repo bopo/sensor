@@ -1,0 +1,75 @@
+<!--index.wxml-->
+<view class="container">
+
+    <!--用户信息-->
+    <view class="main-card-item" id="ykt">
+      <navigator>
+        <view class="card-item-hd">
+          <image class="card-item-icon" src="/static/home/ykt.png"></image>
+          <text class="card-item-name">我的账户</text>
+        </view>
+        <view class="card-item-bd">
+          <view class="card-info-hd">
+            <view class="card-info-left">
+              <text class="ykt-title">余额：</text>
+            </view>
+            <view class="card-info-right">
+              <view>截至时间：2018-09-09</view>
+            </view>
+          </view>
+          <view class="ykt-balance">
+            <text class="ykt-balance-value">0</text>
+            <text class="ykt-balance-text">元</text>
+          </view>
+          <block wx:if="{{card.ykt.data.cost_status}}">
+            <text class="ykt-title">今日消费：</text>
+            <view class="ykt-cost">
+              <block wx:for="{{card.ykt.data.today_cost.value}}" wx:key="*this">
+                <text class="ykt-cost-value">{{item}}</text>
+                <text class="ykt-cost-text" wx:if="{{ index != card.ykt.data.today_cost.value.length - 1}}">+</text>
+              </block>
+              <text class="ykt-cost-text">=</text>
+              <text class="ykt-cost-total">{{card.ykt.data.today_cost.total}}</text>
+              <text class="ykt-cost-text">元</text>
+            </view>
+          </block>
+        </view>
+      </navigator>
+    </view>
+    
+  <!--卡片列表-->
+  <view class="main-card">
+    <!--消费记录-->
+    <view class="main-card-item" id="kb">
+      <navigator url="/pages/core/orders/lists">
+        <view class="card-item-hd">
+          <image class="card-item-icon" src="/static/home/kb.png"></image>
+          <text class="card-item-name">消费记录</text>
+        </view>
+        <view class="card-item-bd kb-nothing">
+          <text>没有消费记录</text>
+        </view>
+
+        <view class="card-item-bd">
+          <view class="kb-item" wx:for="{{card.kb.data}}" wx:key="when">
+            <view class="kb-item-left">
+              <text class="kb-item-what">{{item.what}}</text>
+              <text class="kb-item-when">{{item.when}}</text>
+            </view>
+            <text class="kb-item-where">{{item.where}}</text>
+          </view>
+        </view>
+
+        <view class="kb-open">
+          <text>查看全部消费记录</text>
+        </view>
+      </navigator>
+    </view>
+    <view id="qr"> 
+      <navigator class="scan-btn" bindtap="scanQR"> 
+        <text>扫描开机</text> 
+      </navigator> 
+    </view>
+  </view>
+
+</view>
