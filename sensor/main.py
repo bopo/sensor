@@ -90,15 +90,16 @@ def sensor(debug=False, nolog=False):
     # # rate = input('请输入速率:')
     # rate = 9600
     # port = ttys[int(port)]
+    port = '/dev/tty.SLAB_USBtoUART'
 
-    # print(port)
+    print(port)
     # print(rate)
     
     
     # client = MQTTClient(host=SERVER_HOST, port=SERVER_PORT, name=APPKEY, debug=debug)
     sensor = UARTSensor()
 
-    print('[+] UART checking ...')
+    # print('[+] UART checking ...')
 
     # for k, v in enumerate(ttys):
     #     sensor.reinitialise(port=v, rate=9600)
@@ -108,7 +109,7 @@ def sensor(debug=False, nolog=False):
     #     else:
     #         print('[x] %d => %s ... no' % (k, v))
 
-    port = input('请输入端口:')
+    # port = input('请输入端口:')
 
     print('[+] MODE checking ...', end=" ")
     # for x in xrange(1,10):
@@ -118,6 +119,7 @@ def sensor(debug=False, nolog=False):
     
     for mode, _ in MACHINE.items():
         sensor.reinitialise(port=port, rate=9600, mode=mode)
+        sensor.connect()
         # sensor.publish('start', debug=True)
         # input('press any key to continue.')
         # sensor.publish('close', debug=True)

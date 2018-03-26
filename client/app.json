@@ -3,7 +3,6 @@
     "pages/home/index",
     "pages/user/index",
     "pages/user/issue",
-    
     "pages/more/item/index",
     "pages/more/item/lists",
     "pages/more/scan/index",
@@ -25,20 +24,20 @@
       {
         "pagePath": "pages/home/index",
         "text": "首页",
-        "iconPath": "images/home/index.png",
-        "selectedIconPath": "images/home/index@active.png"
+        "iconPath": "static/home/index.png",
+        "selectedIconPath": "static/home/index@active.png"
       },
       {
         "pagePath": "pages/more/item/index",
         "text": "订单",
-        "iconPath": "images/home/news.png",
-        "selectedIconPath": "images/home/news@active.png"
-      },
+        "iconPath": "static/home/news.png",
+        "selectedIconPath": "static/home/news@active.png"
+      }, 
       {
         "pagePath": "pages/user/index",
         "text": "我的",
-        "iconPath": "images/home/more.png",
-        "selectedIconPath": "images/home/more@active.png"
+        "iconPath": "static/home/more.png",
+        "selectedIconPath": "static/home/more@active.png"
       }
     ]
   },

@@ -1,4 +1,5 @@
 # coding=utf-8
+import time
 import json
 import serial
 import environ
@@ -23,7 +24,7 @@ class UARTSensor:
 
     def connect(self, *args, **kwargs):
         try:
-            self.serial = serial.Serial(self.port, self.rate)
+            self.serial = serial.Serial(self.port, self.rate, timeout=.5)
             return True
         except Exception as e:
             return False
@@ -31,10 +32,11 @@ class UARTSensor:
 
     def publish(self, method='status', debug=False):
         res = self.mode.get(method)
-        rev = self.push(res[0], res[1][-1] if debug is True else None)
+        rev = self.push(res[0])
 
         print()
         print(self.mode.get('title'))
+        print('======================')
         print('method:', method)
         print('cmmand:', res[0])
         print('return:', res[1])
@@ -42,14 +44,15 @@ class UARTSensor:
 
         if rev:
             for x in res[1]:
-                if rev in x:
+                if rev.decode() in x:
                     try:
                         print('values:', res[1].index(x), '=>', x,'............ok')
                         return res[1].index(x)
                     except ValueError as e:
                         pass
 
-        print('values:', rev, '............no')
+        print('values:', rev, '............no') 
+
         return None
 
     def push(self, value=None, default=None):
@@ -58,23 +61,13 @@ class UARTSensor:
 
         try:
             self.serial.write(value)
-            return self.serial.readline()
+            time.sleep(.05)
+            result = self.serial.read(20)
+            print('writes:', value)
+            print('result:', result)
+            return result
         except Exception as e:
-            return False
-
-    # def publish(self, method, value=None):
-    #     print('call', method, value)
-        
-    #     if value:
-    #         print('value', self.MACHINE.get(method)['value'] % value)
-    #     else:
-    #         print('value', self.MACHINE.get(method)['value'])
-
-    #     try:
-    #         value = self.MACHINE.get(method) % value
-    #         return self.serial.write(value)
-    #     except Exception as e:
-    #         return False
+            raise e
 
 
 def main():

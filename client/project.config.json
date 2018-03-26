@@ -1,5 +1,5 @@
 {
-	"description": "项目配置文件。",
+	"description": "项目配置文件",
 	"setting": {
 		"urlCheck": true,
 		"es6": true,
@@ -9,8 +9,8 @@
 	},
 	"compileType": "miniprogram",
 	"libVersion": "1.9.94",
-	"appid": "wx36c46674a4994557",
-	"projectname": "%E6%98%9F%E8%BF%B9%E7%BE%8E%E6%99%92",
+	"appid": "wxa819a70a17a4aae2",
+	"projectname": "%E6%98%9F%E8%BF%B9%E7%BE%8E%E6%99%921",
 	"isGameTourist": false,
 	"condition": {
 		"search": {

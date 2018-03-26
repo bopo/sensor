@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 BASE_DIR = os.path.join(BASE_DIR, '..')
 
@@ -34,7 +35,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+
     'django_extensions',
     'sensor',
     'sensor.mosquitto.auth_plugin',
@@ -119,7 +120,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
@@ -133,7 +133,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
@@ -143,7 +142,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'assets', 'static')
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR,  'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -202,6 +201,9 @@ try:
 except ImportError as e:
     raise e
 
-WECHAT_TOKEN  = '6436c832cc5e5df6'
-WECHAT_APPKEY = 'wx95d4b735c05ff6a7'    
-WECHAT_SECRET = '5c330e437a2ebf13faf122551b103520'    
+WECHAT_TOKEN = '6436c832cc5e5df6'
+WECHAT_APPKEY = 'wx95d4b735c05ff6a7'
+WECHAT_SECRET = '5c330e437a2ebf13faf122551b103520'
+
+SERVER_HOST = '103.200.97.197'
+SERVER_PORT = 1883

@@ -1,6 +1,6 @@
 from django.contrib import admin
-from django.utils.html import format_html_join
 from django.utils.safestring import mark_safe
+
 from sensor import models
 
 
@@ -29,12 +29,14 @@ class DeviceAdmin(admin.ModelAdmin):
         # return mark_safe("<span style='color: red;font-weight: bold;'>%s</span>" % obj.get_status_display())
 
     preview.short_description = '状态'
-    
+
     date_hierarchy = 'created'
-    list_display = ('appkey', 'name', 'model', 'preview')
+    list_display = ('appkey', 'title', 'model', 'preview')
+
 
 class DeviceModelAdmin(admin.ModelAdmin):
-    list_display = ('name',)
+    # list_display = ('title',)
+    pass
 
 
 class RecordsAdmin(admin.ModelAdmin):

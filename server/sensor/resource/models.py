@@ -36,10 +36,9 @@ class DeviceModel(models.Model):
 class Device(StatusModel, TimeStampedModel):
     STATUS = Choices(('free', '空闲'), ('busy', '忙碌'), ('cool', '冷却'))
     model = models.ForeignKey(DeviceModel, verbose_name='机器型号', on_delete=models.CASCADE)
-    title = models.CharField(verbose_name='设备名称', max_length=23, db_index=True, blank=True, unique=True)
+    name = models.CharField(verbose_name='设备名称', max_length=23, db_index=True, blank=True, unique=True)
     appkey = models.CharField(verbose_name='认证标示', max_length=16, db_index=True, blank=True, unique=True)
     secret = models.CharField(verbose_name='认证秘钥', max_length=64, db_index=True, blank=True)
-
 
     def __str__(self):
         return self.name
