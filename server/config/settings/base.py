@@ -13,6 +13,7 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 BASE_DIR = os.path.join(BASE_DIR, '..')
+CERT_DIR = os.path.join(BASE_DIR, 'certs')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
@@ -45,7 +46,7 @@ INSTALLED_APPS = [
 ]
 
 FIXTURE_DIRS = [
-    os.path.join(BASE_DIR, 'config', 'fixtures')
+    os.path.join(BASE_DIR, 'fixture')
 ]
 
 # MIDDLEWARE = (
@@ -207,3 +208,7 @@ WECHAT_SECRET = '5c330e437a2ebf13faf122551b103520'
 
 SERVER_HOST = '103.200.97.197'
 SERVER_PORT = 1883
+
+WXAPP_APPKEY = 'wx36c46674a4994557'
+WXAPP_SECRET = '1a1518e7de49195c4526b21f71be7a15'
+WXAPP_SERVER = 'https://api.weixin.qq.com/sns/jscode2session?appid={APPKEY}&secret={SECRET}&js_code={JSCODE}&grant_type=authorization_code'

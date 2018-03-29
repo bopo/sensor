@@ -33,6 +33,53 @@ Page({
     }
     function isEmptyObject(obj){ for(var key in obj){return false;} return true; }
     function isEqualObject(obj1, obj2){ if(JSON.stringify(obj1) != JSON.stringify(obj2)){return false;} return true; }
+
+wx.checkSession({
+  success: function(res){
+    //session_key 未过期，并且在本生命周期一直有效
+    console.log(res) 
+  },
+  fail: function(){
+    // session_key 已经失效，需要重新执行登录流程
+    wx.login({
+      success: function(res) {
+        var code = res.code; 
+        var errMsg = res.errMsg; 
+        console.log(res) 
+        wx.request({
+          //必需
+          method: 'POST',
+          url: 'https://manhuashu.net/api/wxapp/login/',
+          data: {
+            code: code,
+            data: 'code'
+          },
+          header: {
+              'Content-Type': 'application/json'
+          },
+          success: function(res) {
+            console.log(res) 
+          },
+          fail: function(res) {
+            console.log(res) 
+          },
+          complete: function(res) {
+            console.log(res) 
+          }
+        });        
+      }, 
+      fail: function(res) {
+        console.log(res) 
+      }, 
+      complete: function(res) {
+        console.log(res) 
+      } 
+    });
+  }
+});
+
+// -------------
+
   },
   onLoad: function(){
     this.login();

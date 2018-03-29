@@ -4,8 +4,6 @@ from django.http import HttpResponseRedirect
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from wechatpy import WeChatOAuth, WeChatOAuthException
-from wechatpy.pay.api import  WeChatJSAPI
-from functools import wraps  
 
 from . import WeiMsg, check_signature
 from .handlers import default_handler, router_patterns
@@ -37,12 +35,14 @@ def home(request):
 
         return default_handler(recv_msg)
 
+
 def authorize(func):
     '''
     认证接口
     :param request:
     :return:
     '''
+
     def returned_wrapper(request, *args, **kwargs):
         try:
             user = request.session.get('user', None)
@@ -58,8 +58,8 @@ def authorize(func):
                 access = auth.fetch_access_token(code)
                 auth.refresh_access_token(access.get('refresh_token'))
                 user = auth.get_user_info()
-                request.session['user'] = user  
-                request.session['access'] = access  
+                request.session['user'] = user
+                request.session['access'] = access
                 request.session.set_expiry(int(access.get('expires_in')))
         except WeChatOAuthException as e:
             return HttpResponseRedirect(e)

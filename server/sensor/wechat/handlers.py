@@ -35,34 +35,6 @@ def test_handler(recv_msg, *args, **kwargs):
     return HttpResponse(xml)
 
 
-# def stock_handler(recv_msg, *args, **kwargs):
-#     stock = Basic.objects.get(code=recv_msg.content)
-#     code = 'sh' if stock.code[0] == '6' else 'sz'
-#     code = code + stock.code
-#
-#     reply = ArticlesReply()
-#     reply.source = recv_msg.to_user_name
-#     reply.target = recv_msg.from_user_name
-#     reply.add_article({
-#         'title': stock.name,
-#         'description': 'test',
-#         'image': 'http://image.sinajs.cn/newchart/daily/n/%s.gif' % code,
-#         'url': 'http://finance.sm.cn/astock/info?q=%s&uc_param_str=dnntnwvepffrgibijbpr&from=singlemessage' % stock.code
-#     })
-#     return HttpResponse(reply.render())
-
-
-# def term_handler(recv_msg, *args, **kwargs):
-#     terms = Term.objects.get(keyword=recv_msg.content.strip())
-#     reply = TextReply()
-#     reply.content = terms.content.replace("\n", "")[:200]
-#     reply.source = recv_msg.to_user_name
-#     reply.target = recv_msg.from_user_name
-#     result = reply.render()
-#
-#     return HttpResponse(result)
-
-
 def about_handler(recv_msg, *args, **kwargs):
     content = """
     关于我们

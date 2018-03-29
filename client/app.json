@@ -4,7 +4,7 @@
     "pages/user/index",
     "pages/user/issue",
     "pages/more/item/index",
-    "pages/more/item/lists",
+    "pages/more/item/result",
     "pages/more/scan/index",
     "pages/more/help/index"
   ],

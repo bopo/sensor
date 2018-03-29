@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-from django.apps import AppConfig
-from django.utils.translation import ugettext_lazy as _
-
+import hashlib
 import os
 import re
-import hashlib
+
 import requests
+from django.apps import AppConfig
+from django.utils.translation import ugettext_lazy as _
 
 default_app_config = 'sensor.wechat.WechatConfig'
 
@@ -13,7 +13,6 @@ default_app_config = 'sensor.wechat.WechatConfig'
 class WechatConfig(AppConfig):
     name = 'sensor.wechat'
     verbose_name = _('微信数据')
-
 
 
 def weixin2py_template_dir():

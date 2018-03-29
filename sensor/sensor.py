@@ -44,12 +44,12 @@ class UARTSensor:
 
         if rev:
             for x in res[1]:
-                if rev.decode() in x:
-                    try:
+                try:
+                    if rev.decode() in x:
                         print('values:', res[1].index(x), '=>', x,'............ok')
                         return res[1].index(x)
-                    except ValueError as e:
-                        pass
+                except ValueError as e:
+                    pass
 
         print('values:', rev, '............no') 
 
@@ -60,9 +60,9 @@ class UARTSensor:
             return default
 
         try:
-            self.serial.write(value)
+            self.serial.write(bytes(value, encoding = "ascii"))
             time.sleep(.05)
-            result = self.serial.read(20)
+            result = self.serial.read_all()
             print('writes:', value)
             print('result:', result)
             return result

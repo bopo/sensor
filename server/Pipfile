@@ -19,6 +19,7 @@ pycrypto = "*"
 gevent = "*"
 djangorestframework-jwt = "*"
 djangorestframework-simplejwt = "*"
+"fabric3" = "*"
 
 [dev-packages]
 

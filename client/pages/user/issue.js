@@ -4,21 +4,6 @@ var app = getApp();
 Page({
   data: {
     list_remind: '加载中',
-    list: {
-      status: false,  //是否显示列表
-      count: '-',   //次数
-      data: [],    //列表内容
-      open: 0      //被展示的序号
-    },
-    title: '',
-    content: '',
-    info: '',
-    imgs: [],
-    imgLen: 0,
-    upload: false,
-    uploading: false,
-    qiniu: '',
-    showError: false
   },
   onLoad: function(){
     var _this = this;
@@ -32,7 +17,7 @@ Page({
         info += '\r\n手机型号：' + res.model;
         info += '（'+res.platform+' - '+res.windowWidth+'x'+res.windowHeight+ '）';
         info += '\r\n微信版本号：' + res.version;
-        info += '\r\n星迹美晒版本号：' + app.version;
+        info += '\r\n小程序版本：' + app.version;
         _this.setData({
           info: info
         });
@@ -41,7 +26,7 @@ Page({
     if(app.g_status){ return; }
     wx.showNavigationBarLoading();
     wx.request({
-      url: app._server + '/api/get_feedback.php',
+      url: app._server + '/api/feedback',
       method: 'POST',
       data: app.key({
         openid: app._user.openid
@@ -77,7 +62,7 @@ Page({
       }
     });
     wx.request({
-      url: app._server + '/api/upload/get_upload_token.php',
+      url: app._server + '/api/wxapp/get_upload_token/',
       method: 'POST',
       data: app.key({
         openid: app._user.openid

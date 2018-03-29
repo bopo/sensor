@@ -2,6 +2,7 @@
 import hashlib
 import json
 import logging
+import os
 import threading
 import time
 
@@ -20,12 +21,12 @@ class MQTTServer:
 
         self.client.reinitialise(client_id='master', clean_session=True, userdata=None)
 
-        if tls == True:
-            self.client.tls_set(ca_certs=settings.BASE_DIR + '/certs/ca.crt',
-                                certfile=settings.BASE_DIR + '/certs/client.crt',
-                                keyfile=settings.BASE_DIR + '/certs/client.key')
+        if tls is True:
+            self.client.tls_set(ca_certs=os.path.join(settings.CERT_DIR, 'ca.crt'),
+                                certfile=os.path.join(settings.CERT_DIR, 'client.crt'),
+                                keyfile=os.path.join(settings.CERT_DIR, 'client.key'))
 
-        if debug == True:
+        if debug is True:
             self.client.on_log = self._on_log
             logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(name)s %(levelname)s %(message)s')
 

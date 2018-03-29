@@ -1,10 +1,9 @@
-from django.contrib.auth import authenticate
-from django.contrib.auth import get_user_model
 from django.http import HttpResponse, HttpResponseForbidden
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import View
 
 from .models import Device
+
 
 # 开机操作
 
@@ -84,4 +83,3 @@ class Device(View):
                 return HttpResponse('')
         except Device.DoesNotExist:
             return HttpResponseForbidden('')
-

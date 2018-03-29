@@ -22,6 +22,19 @@ if hasattr(settings, 'MQTT_ALLOW_EMPTY_CLIENT_ID'):
     ALLOW_EMPTY_CLIENT_ID = settings.MQTT_ALLOW_EMPTY_CLIENT_ID
 
 
+class Feedback(StatusModel, TimeStampedModel):
+    STATUS = Choices(('free', '空闲'), ('busy', '忙碌'), ('cool', '冷却'))
+    member = models.ForeignKey(Member, on_delete=models.CASCADE)
+    title = models.CharField(verbose_name='设备名称', max_length=23, db_index=True, blank=True, unique=True)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name_plural = '设备列表'
+        verbose_name = '设备列表'
+
+
 class DeviceModel(models.Model):
     name = models.CharField(max_length=23, db_index=True, blank=True, unique=True)
 
@@ -40,9 +53,8 @@ class Device(StatusModel, TimeStampedModel):
     appkey = models.CharField(verbose_name='认证标示', max_length=16, db_index=True, blank=True, unique=True)
     secret = models.CharField(verbose_name='认证秘钥', max_length=64, db_index=True, blank=True)
 
-
     def __str__(self):
-        return self.name
+        return self.title
 
     class Meta:
         verbose_name_plural = '设备列表'
@@ -342,9 +354,6 @@ class ACL(models.Model):
                 allow = self.password == password
 
         return allow
-
-    def __str__(self):
-        return "ACL %s for %s" % (dict(PROTO_MQTT_ACC)[self.acc], self.topic)
 
     def __str__(self):
         return "ACL %s for %s" % (dict(PROTO_MQTT_ACC)[self.acc], self.topic)

@@ -79,18 +79,19 @@ def doctor(debug=False):
 @cli.command(help='监测机器型号')
 @click.option('-d', '--debug', is_flag=True, help='调试模式.')
 @click.option('--nolog', is_flag=False, help='不显示日志.')
-def sensor(debug=False, nolog=False):
+@click.option('--switch', default='stats', help='开关指令.')
+def sensor(debug=False, nolog=False, switch='stats'):
     import glob
     ttys = glob.glob('/dev/tty.*')
     
     for k,v in enumerate(ttys):
         print(k,v)
 
-    # port = input('请输入端口:')
+    port = input('请输入端口:')
     # # rate = input('请输入速率:')
     # rate = 9600
-    # port = ttys[int(port)]
-    port = '/dev/tty.SLAB_USBtoUART'
+    port = ttys[int(port)]
+    # port = '/dev/tty.SLAB_USBtoUART'
 
     print(port)
     # print(rate)
@@ -124,7 +125,7 @@ def sensor(debug=False, nolog=False):
         # input('press any key to continue.')
         # sensor.publish('close', debug=True)
         # input('press any key to continue.')
-        sensor.publish('stats', debug=False)
+        sensor.publish(switch, debug=False)
         input('press any key to continue.')
         # sensor.publish('clock', debug=True)
         # input('press any key to continue.')

@@ -9,14 +9,18 @@ Page({
     this.getData();
   },
   getData: function(){
-    this.setData({
-      'user': app._user,
-      'time': {
-        'term': app._time.term,
-        'week': app._time.week,
-        'day': days[app._time.day - 1]
-      },
-      'bind': true
+    var _this = this;
+    wx.getUserInfo({
+      success: function(res) {
+        var _user = res.userInfo;
+        _user.balance = '0.00';
+        _user.spending = '0.00';
+        _user.telphone = '185002154896';
+        _this.setData({
+          'user': _user,
+          'info': res.userInfo
+        });
+      }
     });
   }
 });

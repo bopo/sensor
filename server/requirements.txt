@@ -11,3 +11,4 @@ requests
 django-model-utils
 wechatpy
 cryptography
+djangorestframework_simplejwt

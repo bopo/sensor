@@ -43,14 +43,14 @@ App({
   onShow: function(){
   },
   //判断是否有登录信息，让分享时自动登录
-  loginLoad: function(onLoad){
+  loginLoad: function(callback){
     var _this = this;
     if(!_this._t){ // 无登录信息
       _this.getUser(function(e){
-        typeof onLoad == "function" && onLoad(e);
+        typeof callback == "function" && callback(e);
       });
     }else{ // 有登录信息
-      typeof onLoad == "function" && onLoad();
+      typeof callback == "function" && callback();
     }
   },
   //getUser函数，在index中调用
@@ -69,9 +69,10 @@ App({
               return;
             }
             //发送code与微信用户信息，获取学生数据
+            // request(method, url, data, success, fail, complete);
             wx.request({
               method: 'POST',
-              url: _this._server + '/api/users/get_info.php',
+              url: _this.endpoint('/api/wxapp/login/'),
               data: {
                 code: res.code,
                 data: info.encryptedData
@@ -124,8 +125,8 @@ App({
   processData: function(key){
     var _this = this;
     var data = JSON.parse(_this.util.base64.decode(key));
-    _this._user.is_bind = data.is_bind;
-    _this._user.openid = data.user.openid;
+    _this.user.openid = data.user.openid;
+    _this.data = data;
     console.log(_this);
     return data;
   },
@@ -172,7 +173,10 @@ App({
   enCodeBase64:function(data){
     return this.util.base64.encode(data)
   },
+  endpoint: function(uri){
+    return this._server + uri;
+  },
   cache: {},
-  _user: {wx: {}}
-  _server: 'http://device.bopo.me',
+  _user: {wx: {}},
+  _server: 'http://device.bopo.me'
 });

@@ -3,7 +3,7 @@
 import json
 
 from django.conf import settings
-from rest_framework import mixins
+from rest_framework import mixins, generics, status
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -11,24 +11,26 @@ from rest_framework.viewsets import GenericViewSet
 
 from sensor.models import Device
 from sensor.sensor import MQTTServer
-from .serializers import DeviceSerializer
+from .serializers import DeviceSerializer, LoginSerializer
 
 
-# 开机操作
-# /device/[key]/start/
-# 判断是否关机状态
-# /device/[key]/close/
-# 判断是否开机状态
+class LoginViewSet(generics.CreateAPIView):
+    """
+    """
+    serializer_class = LoginSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 class DeviceViewSet(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.ListModelMixin, GenericViewSet):
     """
-    This viewset automatically provides `list` and `detail` actions.
     """
     queryset = Device.objects.all()
     serializer_class = DeviceSerializer
     permission_classes = (IsAuthenticated,)
-
-    sensor = {}
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
